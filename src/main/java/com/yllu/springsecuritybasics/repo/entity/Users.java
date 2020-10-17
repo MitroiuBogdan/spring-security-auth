@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vault {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,5 +21,8 @@ public class Vault {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name="enabled")
+    private int enabled;
 
 }

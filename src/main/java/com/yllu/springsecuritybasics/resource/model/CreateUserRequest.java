@@ -1,33 +1,24 @@
-package com.yllu.springsecuritybasics.service.model;
+package com.yllu.springsecuritybasics.resource.model;
 
-import com.yllu.springsecuritybasics.repo.entity.Users;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
-@Builder
 @AllArgsConstructor
-public class SecurityUser implements UserDetails {
+@Data
+public class CreateUserRequest implements UserDetails {
 
-    private final Users users;
+    private String username;
+    private String password;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(()->"read");
-    }
-
-    @Override
-    public String getPassword() {
-        return users.getPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        return users.getUsername();
     }
 
     @Override
