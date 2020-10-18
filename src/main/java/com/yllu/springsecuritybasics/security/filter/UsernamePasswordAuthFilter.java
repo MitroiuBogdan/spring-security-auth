@@ -2,6 +2,7 @@ package com.yllu.springsecuritybasics.security.filter;
 
 import com.yllu.springsecuritybasics.repository.Otp;
 import com.yllu.springsecuritybasics.repository.OtpRepository;
+import com.yllu.springsecuritybasics.security.TokenManagerInMemory;
 import com.yllu.springsecuritybasics.security.authenication.OneTimePasswordAuth;
 import com.yllu.springsecuritybasics.security.authenication.UsernamePasswordAuth;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,14 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
 
-@Component
 public class UsernamePasswordAuthFilter extends OncePerRequestFilter {
 
     @Autowired
-    private  AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
     @Autowired
-    private  OtpRepository otpRepository;
+    private OtpRepository otpRepository;
+    @Autowired
+    private TokenManagerInMemory tokenManagerInMemory;
 
 
     @Override
@@ -49,8 +51,9 @@ public class UsernamePasswordAuthFilter extends OncePerRequestFilter {
             Authentication a = new OneTimePasswordAuth(username, otp);
             authenticationManager.authenticate(a);
 
-            httpServletResponse.setHeader("Authorization", UUID.randomUUID().toString());
-
+            var token = UUID.randomUUID().toString();
+            tokenManagerInMemory.add(token);
+            httpServletResponse.setHeader("Authorization", token);
         }
 
     }
